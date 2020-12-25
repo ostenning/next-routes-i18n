@@ -1,4 +1,6 @@
-# Dynamic Routes with localization for Next.js
+# Internationalized routing alternative for Next.js
+
+*Actively maintained and contributors welcome*
 
 Based on [Next-Routes](https://github.com/fridays/next-routes) with these changes:
 
@@ -14,13 +16,13 @@ Based on [Next-Routes](https://github.com/fridays/next-routes) with these change
 Install:
 
 ```bash
-npm install next-routes-with-locale --save
+npm install next-routes-i18n --save
 ```
 
 Create `routes.js` inside your project:
 
 ```javascript
-import RoutesWithLocale from 'next-routes-with-locale';
+import RoutesI18n from 'next-routes-i18n';
 
 const options = {
   Link,                       // optional Link, uses next/link by default
@@ -31,18 +33,18 @@ const options = {
   hideLocalePrefix: false,    // hide all locale prefixes
 }
 
-const routes = RoutesWithLocale(options);
+const routes = RoutesI18n(options);
 
 routes
   .add('about', 'en', '/about')
   .add('blog', 'en', '/blog/:slug')
-  .add('blog', 'en', '/blog/:slug', {myCustom: 'data'})
-  .add('user', 'en', '/user/:id', 'profile', {myCustom: 'data'})
-  .add({name: 'beta', locale: 'en', pattern: '/v3', page: 'v3'})
+  .add('blog', 'en', '/blog/:slug', { myCustom: 'data' })
+  .add('user', 'en', '/user/:id', 'profile', { myCustom: 'data' })
+  .add({ name: 'beta', locale: 'en', pattern: '/v3', page: 'v3' })
   .add('about', 'cs', '/o-projektu')
   .add('blog', 'cs', '/blog/:slug')
   .add('user', 'cs', '/uzivatel/:id', 'profile')
-  .add({name: 'beta', locale: 'cs', pattern: '/v3', page: 'v3'})
+  .add({ name: 'beta', locale: 'cs', pattern: '/v3', page: 'v3' })
 
 export default routes;
 ```
@@ -66,7 +68,7 @@ The page component receives the matched URL parameters merged into `query`
 
 ```javascript
 export default class Blog extends React.Component {
-  static async getInitialProps ({query}) {
+  static async getInitialProps ({ query }) {
     // query.slug
   }
   render () {
@@ -81,7 +83,7 @@ export default class Blog extends React.Component {
 // server.js
 const next = require('next')
 const routes = require('./routes')
-const app = next({dev: process.env.NODE_ENV !== 'production'})
+const app = next({ dev: process.env.NODE_ENV !== 'production' })
 const handler = routes.getRequestHandler(app)
 
 // With express
@@ -91,7 +93,7 @@ app.prepare().then(() => {
 })
 
 // Without express
-const {createServer} = require('http')
+const { createServer } = require('http')
 app.prepare().then(() => {
   createServer(handler).listen(3000)
 })
@@ -102,7 +104,7 @@ app.prepare().then(() => {
 Optionally you can pass a custom handler, for example:
 
 ```javascript
-const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
+const handler = routes.getRequestHandler(app, ({ req, res, route, query }) => {
   app.render(req, res, route.page, query)
 })
 ```
@@ -125,7 +127,7 @@ Import `Link` and `Router` from your `routes.js` file to generate URLs based on 
 
 ```jsx
 // pages/index.js
-import {Link} from '../routes'
+import { Link } from '../routes'
 
 export default () => (
   <div>
@@ -160,14 +162,14 @@ It generates the URLs prefixed with the locale for `href` and `as` and renders `
 ```jsx
 // pages/blog.js
 import React from 'react'
-import {Router} from '../routes'
+import { Router } from '../routes'
 
 export default class Blog extends React.Component {
   handleClick () {
     // With route name and params
-    Router.pushRoute('blog', {slug: 'hello-world'})
+    Router.pushRoute('blog', { slug: 'hello-world' })
     // With route name and params and explicit locale
-    Router.pushRoute('blog', {slug: 'hello-world'}, 'en')
+    Router.pushRoute('blog', { slug: 'hello-world' }, 'en')
   }
   render () {
     return (
