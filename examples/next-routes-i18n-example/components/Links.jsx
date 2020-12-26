@@ -1,17 +1,27 @@
+import { useState } from 'react';
 import { Link, Router } from '../routes';
 
-const Links = () => (
-    <div>
-        <Link href="index">Index</Link>
-        <Link href="profile">Profile</Link>
-        <Link href="main">Main</Link>
+const Links = () => {
+    const [locale, setLocale] = useState('fr');
 
-        <div>
-            <button onClick={() => Router.pushRoute('index', {}, 'fr')}>Index</button>
-            <button onClick={() => Router.pushRoute('profile', {}, 'fr')}>Profile</button>
-            <button onClick={() => Router.pushRoute('main', {}, 'fr')}>Main</button>
+    return (
+        <div className="links">
+            <Link href="index" locale={locale}>Index</Link>
+            <Link href="profile" locale={locale}>Profile</Link>
+            <Link href="main" locale={locale}>Main</Link>
+            <div>
+                <button onClick={() => Router.replaceRoute('index', {}, locale, { shallow: true })}>Index</button>
+                <button onClick={() => Router.pushRoute('profile', { other: 'yes' }, locale)}>Profile</button>
+                <button onClick={() => Router.pushRoute('main', {}, locale)}>Main</button>
+            </div>
+
+            <div> 
+                <button onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')}>
+                    Locale: {locale}
+                </button>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default Links;

@@ -14,3 +14,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.links {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+}
+
+.links div {
+  padding: 5px;
+}
+
+.links a, .links button {
+  margin: 5px;
+}
