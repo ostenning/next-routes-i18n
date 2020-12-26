@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "lint": "standard 'src/*' 'test/*'",
+    "lint": "standard --fix 'src/*' 'test/*'",
     "build": "del dist/* && babel src -d dist",
     "prepublishOnly": "npm run test",
     "pretest": "npm run lint && npm run build",
