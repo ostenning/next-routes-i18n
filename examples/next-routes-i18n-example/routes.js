@@ -1,4 +1,4 @@
-const RoutesI18n = require('./lib.js')
+const RoutesI18n = require('next-routes-i18n')
 
 const options = {
   locale: 'fr',               // Locale

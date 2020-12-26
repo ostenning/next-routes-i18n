@@ -1,7 +1,7 @@
 {
   "name": "next-routes-i18n-example",
   "version": "0.1.0",
-  "license": "private",
+  "license": "MIT",
   "scripts": {
     "dev": "babel-node server.js",
     "build": "next build",

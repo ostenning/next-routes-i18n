@@ -20,7 +20,3 @@ export default function Main() {
     </div>
   )
 }
-
-Main.getInitalProps = () => {
-  return {};
-}

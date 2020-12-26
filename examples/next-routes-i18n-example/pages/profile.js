@@ -20,7 +20,3 @@ export default function Profile() {
     </div>
   )
 }
-
-Profile.getInitalProps = () => {
-  return {};
-}

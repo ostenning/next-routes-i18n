@@ -20,7 +20,3 @@ export default function Index() {
     </div>
   )
 }
-
-Index.getInitalProps = () => {
-  return {};
-}
