@@ -128,16 +128,15 @@ class Routes {
     }, { query, parsedUrl })
   }
 
-  findAndGetUrls (name, locale, params) {
+  findAndGetAs (name, locale, params) {
     locale = locale || this.locale
-    const route = this.findByName(name, locale)
+    const route = this.findByName(name, locale) || this.routes[0]
 
     if (route) {
-      return { route, urls: route.getUrls(params), byName: true }
-    } else {
-      return { route: this.routes[0], urls: this.routes[0].getUrls(params), byName: true }
-      // throw new Error(`Route "${name}" not found`)
+      return route.getAs(params)
     }
+
+    throw new Error(`Route "${name}" not found`)
   }
 
   getRequestHandler (app, customHandler) {
@@ -183,16 +182,17 @@ class Routes {
       }
 
       newProps.prefetch = prefetch
-      Object.assign(newProps, this.findAndGetUrls(href, locale2, params).urls)
 
+      const hrefValue = this.findAndGetAs(href, locale2, params)
+      Object.assign(newProps, { href, as: hrefValue })
       return <Link {...newProps} />
     }
   }
 
   getRouter (Router) {
     const wrap = method => (route, params, locale, options) => {
-      const { byName, urls: { as, href } } = this.findAndGetUrls(route, locale, params)
-      return Router[method](href, as, byName ? options : params)
+      const href = this.findAndGetAs(route, locale, params)
+      return Router[method](route, href, options)
     }
 
     Router.pushRoute = wrap('push')
@@ -240,10 +240,6 @@ class Route {
     }), {})
   }
 
-  getHref (params = {}) {
-    return `${this.page}?${toQuerystring({ ...params, nextRoute: this.name })}`
-  }
-
   getAs (params = {}) {
     let as = (this.hideLocale ? '' : '/' + this.locale) + this.toPath(params)
     const keys = Object.keys(params)
@@ -260,12 +256,6 @@ class Route {
     }), {})
 
     return `${as}?${toQuerystring(qsParams)}`
-  }
-
-  getUrls (params) {
-    const as = this.getAs(params)
-    const href = this.getHref(params)
-    return { as, href }
   }
 }
 
