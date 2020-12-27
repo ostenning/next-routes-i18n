@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Links from '../components/Links'
 import styles from '../styles/Home.module.css'
 
-export default function Profile() {
+export default function Profile () {
   return (
     <div className={styles.container}>
       <Head>

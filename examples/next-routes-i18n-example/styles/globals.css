@@ -23,6 +23,10 @@ a {
 }
 
 .links div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
   padding: 5px;
 }
 

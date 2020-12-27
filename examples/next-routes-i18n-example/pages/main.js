@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import Links from '../components/Links'
 import styles from '../styles/Home.module.css'
+import { wait } from '../helpers/time'
 
-export default function Main() {
+export default function Main () {
   return (
     <div className={styles.container}>
       <Head>
