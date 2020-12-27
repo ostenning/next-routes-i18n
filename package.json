@@ -1,6 +1,6 @@
 {
   "name": "next-routes-i18n",
-  "version": "1.8.6",
+  "version": "1.9.0",
   "description": "Internationalized routing alternative for Next.js",
   "repository": "ostenning/next-routes-i18n",
   "main": "dist",
