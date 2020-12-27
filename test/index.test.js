@@ -51,20 +51,6 @@ describe('Routes', () => {
     expect(route.getAs()).toEqual('/a')
   })
 
-  test('add with hideLocalePrefix=true and name+pattern', () => {
-    const routes = nextRoutes({ locale: 'en', hideLocalePrefix: true }).add('a', 'en', '/a')
-    const route = routes.findByName('a', 'en')
-    expect(route.getAs()).toEqual('/a')
-    expect(route.getAs({ test: 'yes' })).toEqual('/a?test=yes')
-  })
-
-  test('add with hideLocalePrefix=false and name+pattern', () => {
-    const routes = nextRoutes({ locale: 'en', hideLocalePrefix: false }).add('a', 'en', '/a')
-    const route = routes.findByName('a', 'en')
-    expect(route.getAs()).toEqual('/en/a')
-    expect(route.getAs({ test: 'yes' })).toEqual('/en/a?test=yes')
-  })
-
   test('add with name, pattern and data', () => {
     const data = { contentItemId: 'test' }
     setup('a', 'en', '/:a', data).testRoute({ name: 'a', locale: 'en', pattern: '/:a', page: '/a', data: data })
@@ -125,17 +111,12 @@ describe('Routes', () => {
     expect(route.getAs()).toEqual('/')
   })
 
-  test('generate as from params', () => {
-    let { route } = setup('a', 'en', '/a/:b/:c+')
-    let params = { b: 'b', c: [1, 2], d: 'd', otherParam: 'hello' }
-    expect(route.getAs(params)).toEqual('/en/a/b/1/2?d=d&otherParam=hello')
-
-    route = setup('a', 'en', '/a/:b/:c').route
-
-    params = { b: 'b', c: 'c', d: 'd', otherParam: 'hello' }
-    expect(route.getAs(params)).toEqual('/en/a/b/c?d=d&otherParam=hello')
-
-    expect(setup('a', 'en').route.getAs()).toEqual('/en/a')
+  test('generate urls from params', () => {
+    const { route } = setup('a', 'en', '/a/:b/:c+')
+    const params = { b: 'b', c: [1, 2], d: 'd' }
+    const expected = { as: '/en/a/b/1/2?d=d', href: '/a?b=b&c=1%2F2&d=d&nextRoute=a' }
+    expect(route.getUrls(params)).toEqual(expected)
+    expect(setup('a', 'en').route.getUrls()).toEqual({ as: '/en/a', href: '/a?nextRoute=a' })
   })
 
   test('with custom Link and Router', () => {
@@ -207,13 +188,18 @@ describe('Link', () => {
 
   test('with filtered params', () => {
     const { testLink } = setup('a', 'en', '/a/:b')
-    testLink({ href: 'a', params: { b: 'b', other: 'hello' } }, { href: 'a', as: '/en/a/b?other=hello', prefetch: false })
+    testLink({ href: 'a', params: { b: 'b' } }, { as: '/en/a/b', href: '/a?b=b&nextRoute=a', prefetch: false })
   })
 
   test('with name and params', () => {
     const { route, testLink } = setup('a', 'en', '/a/:b')
-    testLink({ href: 'a', locale: 'en', params: { b: 'b', otherParam: 'yes' } }, { href: 'a', as: route.getAs({ b: 'b', otherParam: 'yes' }), prefetch: false })
+    testLink({ href: 'a', locale: 'en', params: { b: 'b' } }, { ...route.getUrls({ b: 'b' }), prefetch: false })
   })
+  /*
+    test('with route not found', () => {
+      setup('a', 'en').testLinkException({href: 'b'})
+    })
+  */
 })
 
 const routerMethods = ['push', 'replace', 'prefetch']
@@ -239,7 +225,12 @@ describe(`Router ${routerMethods.join(', ')}`, () => {
 
   test('with name and params', () => {
     const { route, testMethods } = setup('a', 'en', '/a/:b')
-    const as = route.getAs({ b: 'b' })
-    testMethods(['a', { b: 'b' }, 'en', {}], ['a', as, {}])
+    const { as, href } = route.getUrls({ b: 'b' })
+    testMethods(['a', { b: 'b' }, 'en', {}], [href, as, {}])
   })
+  /*
+    test('with route not found', () => {
+      setup('a', 'en').testException(['/b', 'en', {}])
+    })
+  */
 })
