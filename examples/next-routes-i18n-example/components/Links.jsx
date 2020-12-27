@@ -6,8 +6,8 @@ const Links = () => {
 
     return (
         <div className="links">
-            <Link href="index" locale={locale}>Index</Link>
-            <Link href="profile" locale={locale}>Profile</Link>
+            <Link href="index" locale={locale} params={{ other: 'maybe' }}>Index</Link>
+            <Link href="profile" locale={locale} params={{ something: 'yes' }}>Profile</Link>
             <Link href="main" locale={locale}>Main</Link>
             <div>
                 <button onClick={() => Router.replaceRoute('index', {}, locale, { shallow: true })}>Index</button>
