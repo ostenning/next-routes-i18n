@@ -17,7 +17,7 @@ const Links = () => {
         <Link href="index" locale={locale} params={{ other: 'maybe' }}>- Index</Link>
         <Link href="profile" locale={locale}>- Profile</Link>
         <Link href="profile" locale={locale} params={{ something: 'yes' }} shallow>- Profile with param (shallow)</Link>
-        <Link href="main" locale={locale} params={{ something: 'else' }} passHref><a className="test">- Main</a></Link>
+        <Link href="main" locale={locale} params={{ something: 'else', id: '23' }} passHref><a className="test">- Main</a></Link>
       </div>
 
       <div>
@@ -25,7 +25,7 @@ const Links = () => {
         <button onClick={() => Router.pushRoute('index', {}, locale, { shallow: false })}>Index</button>
         <button onClick={() => Router.pushRoute('profile', {}, locale, { shallow: true })}>Profile</button>
         <button onClick={() => Router.replaceRoute('profile', { hello: 'joe' }, locale, { shallow: true })}> Profile with param (shallow)</button>
-        <button onClick={() => Router.pushRoute('main', {}, locale, { shallow: false })}>Main</button>
+        <button onClick={() => Router.pushRoute('main', { id: '23' }, locale, { shallow: false })}>Main</button>
       </div>
     </div>
   );

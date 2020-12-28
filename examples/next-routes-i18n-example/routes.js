@@ -12,8 +12,8 @@ const routes = RoutesI18n(options)
 routes
   .add('index', 'en', '/')
   .add('index', 'fr', '/')
-  .add('main', 'en', '/main')
-  .add('main', 'fr', '/principal')
+  .add('main', 'en', '/main/:id')
+  .add('main', 'fr', '/principal/:id')
   .add('profile', 'en', '/profile')
   .add('profile', 'fr', '/profil')
 
